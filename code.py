@@ -42,6 +42,21 @@ print("Class to Index Mapping:", train_dataset.class_to_idx)
 #Data augmentation
 
 #split in train and test
+def extract_data(loader):
+    images = []
+    labels = []
+    for data, label in loader:
+        images.append(data)
+        labels.append(label)
+    # Stack the data and labels into a single tensor
+    images = torch.cat(images, dim=0)
+    labels = torch.cat(labels, dim=0)
+    return images, labels
+
+# Extract X_train, Y_train, X_val, Y_val
+x_train, y_train = extract_data(train_loader)
+x_val, y_val = extract_data(val_loader)
+
 
 #Model: create Sequential model
 from tensorflow.keras.models import Sequential
@@ -70,4 +85,4 @@ early_stop=EarlyStopping(monitor="val_loss",mode="min",verbose=1,patience=5)
 
 #Try training the model for 30 epochs:
 
-history=model.fit(x_train,y_train,validation_data=(x_test,y_test),epochs=30,callbacks=[early_stop],shuffle=True)
+history=model.fit(x_train,y_train,validation_data=(x_val,y_val),epochs=30,callbacks=[early_stop],shuffle=True)
