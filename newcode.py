@@ -127,3 +127,11 @@ valid_loss = valid_loss/len(val_loader.dataset)
 # print training/validation statistics 
 print('Epoch: {} \tTraining Loss: {:.6f} \tValidation Loss: {:.6f}'.format(
     epoch, train_loss, valid_loss))
+    # save model if validation loss has decreased
+# save model if validation loss has decreased
+if valid_loss <= valid_loss_min:
+    print('Validation loss decreased ({:.6f} --> {:.6f}).  Saving model ...'.format(
+        valid_loss_min,
+        valid_loss))
+    torch.save(model.state_dict(), 'model_cifar.pt')
+    valid_loss_min = valid_loss
