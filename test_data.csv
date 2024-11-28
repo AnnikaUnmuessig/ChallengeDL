@@ -1,5 +1,5 @@
 img_id,predicted_class
-10012.jpg,1
+10012.jpg,0
 10020.jpg,0
 10022.jpg,0
 10037.jpg,0
@@ -136,7 +136,7 @@ img_id,predicted_class
 11252.jpg,1
 11253.jpg,0
 11261.jpg,0
-11272.jpg,0
+11272.jpg,1
 1129.jpg,0
 11295.jpg,0
 11307.jpg,0
@@ -196,11 +196,11 @@ img_id,predicted_class
 11834.jpg,0
 1184.jpg,0
 11863.jpg,0
-11874.jpg,1
+11874.jpg,0
 11888.jpg,0
 1189.jpg,0
 11896.jpg,1
-11898.jpg,1
+11898.jpg,0
 11900.jpg,0
 11909.jpg,1
 11914.jpg,0
@@ -232,13 +232,13 @@ img_id,predicted_class
 12172.jpg,0
 12179.jpg,0
 122.jpg,0
-12204.jpg,1
+12204.jpg,0
 12205.jpg,0
 12220.jpg,0
 12223.jpg,0
 12232.jpg,1
 12239.jpg,0
-12245.jpg,1
+12245.jpg,0
 12254.jpg,0
 12268.jpg,0
 12278.jpg,0
@@ -254,7 +254,7 @@ img_id,predicted_class
 12382.jpg,0
 12398.jpg,1
 12433.jpg,0
-12439.jpg,1
+12439.jpg,0
 12442.jpg,0
 12462.jpg,1
 12465.jpg,0
@@ -306,7 +306,7 @@ img_id,predicted_class
 12874.jpg,1
 12877.jpg,0
 12882.jpg,0
-12893.jpg,0
+12893.jpg,1
 12894.jpg,0
 12911.jpg,0
 12931.jpg,0
@@ -340,7 +340,7 @@ img_id,predicted_class
 13110.jpg,0
 13113.jpg,0
 13131.jpg,0
-13132.jpg,1
+13132.jpg,0
 13141.jpg,0
 13147.jpg,1
 13163.jpg,1
@@ -415,16 +415,16 @@ img_id,predicted_class
 138.jpg,0
 13805.jpg,1
 13806.jpg,1
-13807.jpg,1
+13807.jpg,0
 13808.jpg,1
 13821.jpg,0
 1383.jpg,0
 13835.jpg,0
 13859.jpg,1
 13873.jpg,0
-13881.jpg,1
-13886.jpg,1
-13890.jpg,0
+13881.jpg,0
+13886.jpg,0
+13890.jpg,1
 13898.jpg,0
 13916.jpg,0
 13917.jpg,1
@@ -610,7 +610,7 @@ img_id,predicted_class
 15269.jpg,1
 15274.jpg,0
 15280.jpg,0
-15282.jpg,0
+15282.jpg,1
 15303.jpg,0
 15312.jpg,0
 15313.jpg,1
@@ -621,7 +621,7 @@ img_id,predicted_class
 15366.jpg,0
 15367.jpg,1
 15370.jpg,0
-15395.jpg,0
+15395.jpg,1
 15405.jpg,0
 15410.jpg,0
 15416.jpg,0
@@ -633,7 +633,7 @@ img_id,predicted_class
 15506.jpg,0
 15509.jpg,0
 15515.jpg,0
-15521.jpg,0
+15521.jpg,1
 15523.jpg,1
 15537.jpg,0
 15539.jpg,0
@@ -650,7 +650,7 @@ img_id,predicted_class
 1615.jpg,1
 1632.jpg,0
 1683.jpg,0
-1685.jpg,1
+1685.jpg,0
 1688.jpg,0
 1703.jpg,0
 1705.jpg,1
@@ -699,7 +699,7 @@ img_id,predicted_class
 2053.jpg,0
 2057.jpg,0
 207.jpg,0
-209.jpg,0
+209.jpg,1
 211.jpg,0
 2111.jpg,0
 2119.jpg,0
@@ -719,7 +719,7 @@ img_id,predicted_class
 2258.jpg,0
 226.jpg,0
 2276.jpg,0
-2285.jpg,1
+2285.jpg,0
 231.jpg,0
 2317.jpg,0
 2320.jpg,0
@@ -827,7 +827,7 @@ img_id,predicted_class
 3318.jpg,0
 3326.jpg,1
 3329.jpg,1
-3334.jpg,0
+3334.jpg,1
 336.jpg,1
 3362.jpg,0
 337.jpg,1
@@ -887,7 +887,7 @@ img_id,predicted_class
 3800.jpg,0
 3817.jpg,0
 3819.jpg,0
-3841.jpg,0
+3841.jpg,1
 3850.jpg,1
 3854.jpg,0
 3858.jpg,0
@@ -925,10 +925,10 @@ img_id,predicted_class
 4165.jpg,1
 4181.jpg,1
 4187.jpg,0
-4207.jpg,1
+4207.jpg,0
 4215.jpg,1
 4219.jpg,1
-4230.jpg,1
+4230.jpg,0
 4231.jpg,1
 4238.jpg,0
 4241.jpg,0
@@ -949,7 +949,7 @@ img_id,predicted_class
 4362.jpg,0
 437.jpg,0
 4372.jpg,0
-4373.jpg,1
+4373.jpg,0
 4383.jpg,0
 4397.jpg,0
 441.jpg,1
@@ -961,12 +961,12 @@ img_id,predicted_class
 4436.jpg,0
 4446.jpg,0
 4448.jpg,0
-446.jpg,1
+446.jpg,0
 4483.jpg,0
 4488.jpg,0
 4496.jpg,1
 4511.jpg,1
-4522.jpg,0
+4522.jpg,1
 4524.jpg,0
 453.jpg,0
 4536.jpg,0
@@ -982,7 +982,7 @@ img_id,predicted_class
 4609.jpg,0
 4624.jpg,0
 463.jpg,0
-4634.jpg,1
+4634.jpg,0
 4639.jpg,0
 4667.jpg,0
 4671.jpg,0
@@ -1007,7 +1007,7 @@ img_id,predicted_class
 4827.jpg,1
 4849.jpg,0
 4893.jpg,1
-4898.jpg,1
+4898.jpg,0
 4927.jpg,0
 4929.jpg,1
 493.jpg,1
@@ -1034,7 +1034,7 @@ img_id,predicted_class
 5169.jpg,1
 5185.jpg,0
 521.jpg,0
-5249.jpg,1
+5249.jpg,0
 5279.jpg,0
 5307.jpg,1
 5309.jpg,0
@@ -1062,7 +1062,7 @@ img_id,predicted_class
 551.jpg,0
 5518.jpg,0
 5527.jpg,0
-554.jpg,1
+554.jpg,0
 5548.jpg,0
 556.jpg,0
 5567.jpg,0
@@ -1089,7 +1089,7 @@ img_id,predicted_class
 5797.jpg,0
 5799.jpg,0
 5802.jpg,1
-5804.jpg,0
+5804.jpg,1
 5808.jpg,0
 5821.jpg,0
 5834.jpg,0
@@ -1098,16 +1098,16 @@ img_id,predicted_class
 5868.jpg,1
 5870.jpg,0
 5877.jpg,1
-5881.jpg,1
+5881.jpg,0
 5890.jpg,0
 5893.jpg,0
 5902.jpg,0
 591.jpg,0
 5917.jpg,0
 592.jpg,0
-5923.jpg,1
+5923.jpg,0
 593.jpg,0
-5965.jpg,1
+5965.jpg,0
 5983.jpg,0
 599.jpg,0
 5990.jpg,1
@@ -1166,7 +1166,7 @@ img_id,predicted_class
 6506.jpg,0
 6508.jpg,0
 6517.jpg,0
-6529.jpg,0
+6529.jpg,1
 6549.jpg,0
 6562.jpg,1
 6564.jpg,0
@@ -1213,7 +1213,7 @@ img_id,predicted_class
 6950.jpg,0
 6953.jpg,1
 6955.jpg,1
-6961.jpg,1
+6961.jpg,0
 6963.jpg,1
 6971.jpg,1
 6976.jpg,1
@@ -1225,7 +1225,7 @@ img_id,predicted_class
 6996.jpg,1
 7.jpg,1
 7005.jpg,0
-7010.jpg,0
+7010.jpg,1
 7011.jpg,0
 7022.jpg,1
 7030.jpg,1
@@ -1241,7 +1241,7 @@ img_id,predicted_class
 7102.jpg,0
 7109.jpg,0
 7122.jpg,1
-7127.jpg,0
+7127.jpg,1
 7128.jpg,1
 7138.jpg,0
 714.jpg,0
@@ -1253,7 +1253,7 @@ img_id,predicted_class
 7173.jpg,0
 7178.jpg,0
 718.jpg,0
-7180.jpg,1
+7180.jpg,0
 7183.jpg,0
 7192.jpg,0
 7205.jpg,1
@@ -1261,7 +1261,7 @@ img_id,predicted_class
 7215.jpg,0
 7216.jpg,0
 7237.jpg,1
-7242.jpg,1
+7242.jpg,0
 7245.jpg,1
 7249.jpg,0
 7260.jpg,0
@@ -1334,7 +1334,7 @@ img_id,predicted_class
 7834.jpg,0
 7838.jpg,0
 7841.jpg,1
-785.jpg,0
+785.jpg,1
 7864.jpg,0
 7878.jpg,1
 7881.jpg,1
@@ -1361,8 +1361,8 @@ img_id,predicted_class
 8142.jpg,0
 815.jpg,1
 8155.jpg,0
-8180.jpg,0
-8192.jpg,1
+8180.jpg,1
+8192.jpg,0
 8206.jpg,0
 8211.jpg,1
 8224.jpg,1
@@ -1378,7 +1378,7 @@ img_id,predicted_class
 8321.jpg,0
 8323.jpg,0
 8325.jpg,0
-8357.jpg,0
+8357.jpg,1
 8360.jpg,0
 8370.jpg,0
 8374.jpg,1
@@ -1399,9 +1399,9 @@ img_id,predicted_class
 8507.jpg,0
 851.jpg,1
 8515.jpg,0
-8526.jpg,1
+8526.jpg,0
 8529.jpg,1
-8536.jpg,0
+8536.jpg,1
 8545.jpg,0
 8553.jpg,0
 8557.jpg,0
@@ -1419,7 +1419,7 @@ img_id,predicted_class
 8641.jpg,1
 8645.jpg,0
 8647.jpg,0
-8654.jpg,0
+8654.jpg,1
 8659.jpg,1
 8688.jpg,1
 8689.jpg,0
@@ -1431,7 +1431,7 @@ img_id,predicted_class
 8714.jpg,0
 8720.jpg,0
 8729.jpg,0
-8749.jpg,0
+8749.jpg,1
 8771.jpg,1
 8778.jpg,0
 8782.jpg,0
@@ -1442,7 +1442,7 @@ img_id,predicted_class
 8815.jpg,1
 8834.jpg,1
 8836.jpg,1
-8839.jpg,0
+8839.jpg,1
 8854.jpg,1
 8879.jpg,1
 8886.jpg,0
@@ -1480,7 +1480,7 @@ img_id,predicted_class
 92.jpg,0
 922.jpg,1
 9222.jpg,0
-9223.jpg,1
+9223.jpg,0
 9228.jpg,0
 9234.jpg,1
 925.jpg,0
@@ -1513,7 +1513,7 @@ img_id,predicted_class
 9483.jpg,1
 9486.jpg,0
 9504.jpg,0
-9507.jpg,1
+9507.jpg,0
 9523.jpg,0
 9537.jpg,1
 9548.jpg,0
@@ -1547,7 +1547,7 @@ img_id,predicted_class
 9850.jpg,1
 9866.jpg,0
 9873.jpg,1
-988.jpg,1
+988.jpg,0
 9885.jpg,0
 9897.jpg,0
 9904.jpg,1
