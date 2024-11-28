@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 
 #%%
 
-dataset_dir="/Users/Annika/Documents/Year3/DeepLearning/ChallengeDL/dl2425_challenge_dataset"
+dataset_dir = "dl2425_challenge_dataset"
 print(os.listdir(dataset_dir))
 
 
