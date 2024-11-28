@@ -20,7 +20,7 @@ import torchvision
 
 
 
-dataset_dir="/Users/Annika/Documents/Year3/DeepLearning/Challenge/dl2425_challenge_dataset"
+dataset_dir="/Users/Annika/Documents/Year3/DeepLearning/ChallengeDL/dl2425_challenge_dataset"
 print(os.listdir(dataset_dir))
 
 
@@ -84,13 +84,12 @@ optimizer = torch.optim.SGD(model.parameters(), lr = 0.003, momentum= 0.9)
 # number of epochs to train the model
 n_epochs = 5
 
-valid_loss_min = np.inf # track change in validation loss
+#valid_loss_min = np.inf # track change in validation loss
 
 for epoch in range(1, n_epochs+1):
 
-    # keep track of training and validation loss
+    # keep track of training loss
     train_loss = 0.0
-    valid_loss = 0.0
     
     # train the model #
     model.train()
@@ -107,9 +106,42 @@ for epoch in range(1, n_epochs+1):
         optimizer.step()
         # update training loss
         train_loss += loss.item()*data.size(0)
+    #average loss for epoch
+    train_loss = train_loss / len(train_loader.dataset)
+    print(f"Epoch {epoch}, Average Training Loss: {train_loss:.6f}")
+       
+        
+       
+        
+model.eval()  # Set the model to evaluation mod
+correct = 0   # Count of correct predictions
+total = 0     # Total samples in the test set
+
+with torch.no_grad():  # Disable gradient computation for evaluation
+    for i, (data, target) in enumerate(val_loader):  # Assuming test_loader is the DataLoader for the test set
+        # Get model predictions
+        output = model(data)
+        
+        # Predicted class
+        _, predicted_class = torch.max(output, 1)
+        
+        # Count correct predictions
+        correct += (predicted_class == target).sum().item()
+        total += target.size(0)
+        
+        # Print individual predictions for debugging
+        for j in range(len(data)):
+            print(f"{i * len(data) + j + 1}.) Prediction: {predicted_class[j].item()} | "
+                  f"Actual: {target[j].item()} | "
+                  f"Raw Output: {output[j].tolist()}")
+
+# Calculate and print overall accuracy
+accuracy = correct / total
+print(f"\nOverall Test Accuracy: {accuracy:.2%}")
+print(f"Total Correct Predictions: {correct}/{total}")
         
         
-        
+"""        
         # Validating the model
 model.eval()
 for data, target in val_loader:
@@ -135,3 +167,4 @@ if valid_loss <= valid_loss_min:
         valid_loss))
     torch.save(model.state_dict(), 'model_cifar.pt')
     valid_loss_min = valid_loss
+"""
