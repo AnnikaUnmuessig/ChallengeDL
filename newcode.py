@@ -6,7 +6,6 @@ Created on Wed Nov 27 15:44:33 2024
 """
 
 #%%
-#Change test
 import torch
 import torch.nn as nn 
 import torch.nn.functional as F
@@ -15,6 +14,7 @@ from torch.utils.data import DataLoader
 import os
 import csv
 from PIL import Image
+import matplotlib.pyplot as plt
 
 #%%
 
@@ -78,14 +78,13 @@ model = Net()
 criterion = torch.nn.CrossEntropyLoss()# Optimizer
 optimizer = torch.optim.SGD(model.parameters(), lr = 0.003, momentum= 0.9)
 
-
+#%%
 # number of epochs to train the model
-n_epochs = 5
+n_epochs = 25
 
 #valid_loss_min = np.inf # track change in validation loss
 
 
-#%%
 for epoch in range(1, n_epochs+1):
 
     # keep track of training loss
@@ -167,9 +166,31 @@ with open(csv_file_path, mode='w', newline='') as file:
 
 
 #%%
+import random
+#plot random image from csv file + prediction
+random_index = random.randint(2, 1563)
+img_id, predicted_class = prediction(image_folder, csv_file_path, random_index)
 
 
-        
+def prediction(image_folder,csv_file_path, index):
+    with open(csv_file_path, mode='r') as file:
+        reader = csv.DictReader(file)
+        rows = list(reader)
+    row = rows[index]
+    img_id = row['img_id']
+    img_id = row['img_id']
+    predicted_class = int(row['prediction'])    
+    img_path = os.path.join(image_folder, img_id)
+    img = Image.open(img_path).convert('RGB')
+    plt.imshow(img)
+    plt.title(f"Prediction: Class {predicted_class}")
+    plt.axis('off')  
+    plt.show()
+    
+    return img_id, predicted_class
+
+    
+#%%        
 """        
         # Validating the model
 model.eval()
