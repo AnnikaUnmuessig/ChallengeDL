@@ -4,21 +4,19 @@ Created on Wed Nov 27 15:44:33 2024
 
 @author: Annika
 """
+
+#%%
 #Change test
 import torch
 import torch.nn as nn 
 import torch.nn.functional as F
-import matplotlib.pyplot as plt
-import pandas as pd
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 import os
-import numpy as np
-from sklearn.model_selection import train_test_split
-import tensorflow
-import torchvision
+import csv
+from PIL import Image
 
-
+#%%
 
 dataset_dir="/Users/Annika/Documents/Year3/DeepLearning/ChallengeDL/dl2425_challenge_dataset"
 print(os.listdir(dataset_dir))
@@ -45,7 +43,7 @@ val_loader = DataLoader(val_dataset, batch_size=16, shuffle=True)
 print("Class to Index Mapping:", train_dataset.class_to_idx)
 
 
-
+#%%
 
 #Model creation:
 class Net(nn.Module):
@@ -86,6 +84,8 @@ n_epochs = 5
 
 #valid_loss_min = np.inf # track change in validation loss
 
+
+#%%
 for epoch in range(1, n_epochs+1):
 
     # keep track of training loss
@@ -111,15 +111,15 @@ for epoch in range(1, n_epochs+1):
     print(f"Epoch {epoch}, Average Training Loss: {train_loss:.6f}")
        
         
-       
+#%%       
         
 model.eval()  # Set the model to evaluation mod
 correct = 0   # Count of correct predictions
 total = 0     # Total samples in the test set
 
 with torch.no_grad():  # Disable gradient computation for evaluation
-    for i, (data, target) in enumerate(val_loader):  # Assuming test_loader is the DataLoader for the test set
-        # Get model predictions
+    for i, (data, target) in enumerate(val_loader):
+        # Get model predictions: forward pass
         output = model(data)
         
         # Predicted class
@@ -132,14 +132,43 @@ with torch.no_grad():  # Disable gradient computation for evaluation
         # Print individual predictions for debugging
         for j in range(len(data)):
             print(f"{i * len(data) + j + 1}.) Prediction: {predicted_class[j].item()} | "
-                  f"Actual: {target[j].item()} | "
-                  f"Raw Output: {output[j].tolist()}")
+                  f"Actual: {target[j].item()}")
 
 # Calculate and print overall accuracy
 accuracy = correct / total
 print(f"\nOverall Test Accuracy: {accuracy:.2%}")
 print(f"Total Correct Predictions: {correct}/{total}")
         
+#%%
+#Save the model
+torch.save(model.state_dict(), 'model_fire.pt')
+#%%
+
+#Testing unlabelled images
+#Create csv file with img id and predicted class 
+#transform the test dataset the same way we have transformed train
+csv_file_path = "/Users/Annika/Documents/Year3/DeepLearning/ChallengeDL/test_data.csv"
+image_folder="/Users/Annika/Documents/Year3/DeepLearning/ChallengeDL/dl2425_challenge_dataset/test"
+with open(csv_file_path, mode='w', newline='') as file:
+    fieldnames = ["img_id", "predicted_class"]
+    writer = csv.DictWriter(file, fieldnames=fieldnames)
+    writer.writeheader()  # Write the header row
+    with torch.no_grad():
+        for f in os.listdir(image_folder):
+            img_path = os.path.join(image_folder, f)
+            img = Image.open(img_path).convert('RGB')
+            image_tensor = transform(img)
+            output = model(image_tensor)  # Get model predictions
+            _, predicted_class = torch.max(output, 1)
+            img_id = os.path.basename(f)  # Get the image filename
+            writer.writerow({"img_id": img_id, "predicted_class": predicted_class.item()})
+
+    
+
+
+#%%
+
+
         
 """        
         # Validating the model
