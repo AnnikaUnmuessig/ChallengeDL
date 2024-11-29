@@ -5,9 +5,10 @@ Created on Wed Nov 27 15:44:33 2024
 @author: Annika
 """
 
-#%%
+# %%
+import random
 import torch
-import torch.nn as nn 
+import torch.nn as nn
 import torch.nn.functional as F
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
@@ -16,25 +17,26 @@ import csv
 from PIL import Image
 import matplotlib.pyplot as plt
 
-#%%
+# %%
 
 dataset_dir = "dl2425_challenge_dataset"
 print(os.listdir(dataset_dir))
 
 
-
-#preproccessing step, augmentation, to tensor object
+# preproccessing step, augmentation, to tensor object
 transform = transforms.Compose([
     transforms.RandomHorizontalFlip(),
     transforms.RandomRotation(20),
     transforms.ToTensor(),
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-    ])
+])
 
 
 # Load datasets using ImageFolder
-train_dataset = datasets.ImageFolder(os.path.join(dataset_dir, "train").replace("\\", "/"), transform=transform)
-val_dataset = datasets.ImageFolder(os.path.join(dataset_dir, "val").replace("\\", "/"), transform=transform)
+train_dataset = datasets.ImageFolder(os.path.join(
+    dataset_dir, "train").replace("\\", "/"), transform=transform)
+val_dataset = datasets.ImageFolder(os.path.join(
+    dataset_dir, "val").replace("\\", "/"), transform=transform)
 
 # Create DataLoaders for batching
 train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
@@ -43,9 +45,9 @@ val_loader = DataLoader(val_dataset, batch_size=16, shuffle=True)
 print("Class to Index Mapping:", train_dataset.class_to_idx)
 
 
-#%%
+# %%
 
-#Model creation:
+# Model creation:
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
@@ -59,7 +61,7 @@ class Net(nn.Module):
         self.fc2 = nn.Linear(256, 84)
         self.fc3 = nn.Linear(84, 2)
         self.softmax = nn.LogSoftmax(dim=1)
-        
+
     def forward(self, x):
         # add sequence of convolutional and max pooling layers
         x = self.pool(F.relu(self.conv1(x)))
@@ -70,26 +72,27 @@ class Net(nn.Module):
         x = self.dropout(F.relu(self.fc2(x)))
         x = self.softmax(self.fc3(x))
         return x
-    
+
+
 # create a complete CNN
 model = Net()
 
 # Loss function
-criterion = torch.nn.CrossEntropyLoss()# Optimizer
-optimizer = torch.optim.SGD(model.parameters(), lr = 0.003, momentum= 0.9)
+criterion = torch.nn.CrossEntropyLoss()  # Optimizer
+optimizer = torch.optim.SGD(model.parameters(), lr=0.003, momentum=0.9)
 
-#%%
+# %%
 # number of epochs to train the model
 n_epochs = 25
 
-#valid_loss_min = np.inf # track change in validation loss
+# valid_loss_min = np.inf # track change in validation loss
 
 
 for epoch in range(1, n_epochs+1):
 
     # keep track of training loss
     train_loss = 0.0
-    
+
     # train the model #
     model.train()
     for data, target in train_loader:
@@ -105,13 +108,13 @@ for epoch in range(1, n_epochs+1):
         optimizer.step()
         # update training loss
         train_loss += loss.item()*data.size(0)
-    #average loss for epoch
+    # average loss for epoch
     train_loss = train_loss / len(train_loader.dataset)
     print(f"Epoch {epoch}, Average Training Loss: {train_loss:.6f}")
-       
-        
-#%%       
-        
+
+
+# %%
+
 model.eval()  # Set the model to evaluation mod
 correct = 0   # Count of correct predictions
 total = 0     # Total samples in the test set
@@ -120,14 +123,14 @@ with torch.no_grad():  # Disable gradient computation for evaluation
     for i, (data, target) in enumerate(val_loader):
         # Get model predictions: forward pass
         output = model(data)
-        
+
         # Predicted class
         _, predicted_class = torch.max(output, 1)
-        
+
         # Count correct predictions
         correct += (predicted_class == target).sum().item()
         total += target.size(0)
-        
+
         # Print individual predictions for debugging
         for j in range(len(data)):
             print(f"{i * len(data) + j + 1}.) Prediction: {predicted_class[j].item()} | "
@@ -137,17 +140,17 @@ with torch.no_grad():  # Disable gradient computation for evaluation
 accuracy = correct / total
 print(f"\nOverall Test Accuracy: {accuracy:.2%}")
 print(f"Total Correct Predictions: {correct}/{total}")
-        
-#%%
-#Save the model
-torch.save(model.state_dict(), 'model_fire.pt')
-#%%
 
-#Testing unlabelled images
-#Create csv file with img id and predicted class 
-#transform the test dataset the same way we have transformed train
-csv_file_path = "/Users/Annika/Documents/Year3/DeepLearning/ChallengeDL/test_data.csv"
-image_folder="/Users/Annika/Documents/Year3/DeepLearning/ChallengeDL/dl2425_challenge_dataset/test"
+# %%
+# Save the model
+torch.save(model.state_dict(), 'model_fire.pt')
+# %%
+
+# Testing unlabelled images
+# Create csv file with img id and predicted class
+# transform the test dataset the same way we have transformed train
+csv_file_path = "test_data.csv"
+image_folder = "dl2425_challenge_dataset/test"
 with open(csv_file_path, mode='w', newline='') as file:
     fieldnames = ["img_id", "predicted_class"]
     writer = csv.DictWriter(file, fieldnames=fieldnames)
@@ -160,37 +163,35 @@ with open(csv_file_path, mode='w', newline='') as file:
             output = model(image_tensor)  # Get model predictions
             _, predicted_class = torch.max(output, 1)
             img_id = os.path.basename(f)  # Get the image filename
-            writer.writerow({"img_id": img_id, "predicted_class": predicted_class.item()})
+            writer.writerow(
+                {"img_id": img_id, "predicted_class": predicted_class.item()})
 
-    
 
-
-#%%
-import random
-#plot random image from csv file + prediction
+# %%
+# plot random image from csv file + prediction
 random_index = random.randint(2, 1563)
 img_id, predicted_class = prediction(image_folder, csv_file_path, random_index)
 
 
-def prediction(image_folder,csv_file_path, index):
+def prediction(image_folder, csv_file_path, index):
     with open(csv_file_path, mode='r') as file:
         reader = csv.DictReader(file)
         rows = list(reader)
     row = rows[index]
     img_id = row['img_id']
     img_id = row['img_id']
-    predicted_class = int(row['prediction'])    
+    predicted_class = int(row['prediction'])
     img_path = os.path.join(image_folder, img_id)
     img = Image.open(img_path).convert('RGB')
     plt.imshow(img)
     plt.title(f"Prediction: Class {predicted_class}")
-    plt.axis('off')  
+    plt.axis('off')
     plt.show()
-    
+
     return img_id, predicted_class
 
-    
-#%%        
+
+# %%
 """        
         # Validating the model
 model.eval()
