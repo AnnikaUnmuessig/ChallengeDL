@@ -79,7 +79,7 @@ model = Net()
 
 # Loss function
 criterion = torch.nn.CrossEntropyLoss()  # Optimizer
-optimizer = torch.optim.SGD(model.parameters(), lr=0.003, momentum=0.9)
+optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
 # %%
 # number of epochs to train the model
