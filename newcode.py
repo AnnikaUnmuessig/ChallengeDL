@@ -27,6 +27,8 @@ print(os.listdir(dataset_dir))
 transform = transforms.Compose([
     transforms.RandomHorizontalFlip(),
     transforms.RandomRotation(20),
+    transforms.RandomResizedCrop(224),
+    transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
     transforms.ToTensor(),
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
 ])
@@ -56,21 +58,22 @@ class Net(nn.Module):
         # max pooling layer
         self.pool = nn.MaxPool2d(2, 2)
         self.conv2 = nn.Conv2d(16, 32, 5)
-        self.dropout = nn.Dropout(0.2)
+        self.conv3 = nn.Conv2d(32, 64, 3)
+        self.dropout = nn.Dropout(0.3)
         self.fc1 = nn.Linear(32*53*53, 256)
         self.fc2 = nn.Linear(256, 84)
         self.fc3 = nn.Linear(84, 2)
-        self.softmax = nn.LogSoftmax(dim=1)
 
     def forward(self, x):
         # add sequence of convolutional and max pooling layers
         x = self.pool(F.relu(self.conv1(x)))
         x = self.pool(F.relu(self.conv2(x)))
+        x = self.pool(F.relu(self.conv3(x)))
         x = self.dropout(x)
-        x = x.view(-1, 32 * 53 * 53)
+        x = x.view(-1, 32*53*53)
         x = F.relu(self.fc1(x))
         x = self.dropout(F.relu(self.fc2(x)))
-        x = self.softmax(self.fc3(x))
+        x = self.fc3(x)
         return x
 
 
@@ -79,11 +82,12 @@ model = Net()
 
 # Loss function
 criterion = torch.nn.CrossEntropyLoss()  # Optimizer
-optimizer = torch.optim.SGD(model.parameters(), lr=0.003, momentum=0.9)
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-5)
+scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=10)
 
 # %%
 # number of epochs to train the model
-n_epochs = 25
+n_epochs = 35
 
 # valid_loss_min = np.inf # track change in validation loss
 
@@ -168,9 +172,6 @@ with open(csv_file_path, mode='w', newline='') as file:
 
 
 # %%
-# plot random image from csv file + prediction
-random_index = random.randint(2, 1563)
-img_id, predicted_class = prediction(image_folder, csv_file_path, random_index)
 
 
 def prediction(image_folder, csv_file_path, index):
@@ -189,6 +190,11 @@ def prediction(image_folder, csv_file_path, index):
     plt.show()
 
     return img_id, predicted_class
+
+
+# plot random image from csv file + prediction
+random_index = random.randint(2, 1563)
+img_id, predicted_class = prediction(image_folder, csv_file_path, random_index)
 
 
 # %%
