@@ -53,14 +53,14 @@ print("Class to Index Mapping:", train_dataset.class_to_idx)
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        # convolutional layer
+
         self.conv1 = nn.Conv2d(3, 16, 5)
-        # max pooling layer
         self.pool = nn.MaxPool2d(2, 2)
         self.conv2 = nn.Conv2d(16, 32, 5)
         self.conv3 = nn.Conv2d(32, 64, 3)
         self.dropout = nn.Dropout(0.3)
-        self.fc1 = nn.Linear(32*53*53, 256)
+        
+        self.fc1 = nn.Linear(flattened_size, 256)
         self.fc2 = nn.Linear(256, 84)
         self.fc3 = nn.Linear(84, 2)
 
@@ -70,16 +70,20 @@ class Net(nn.Module):
         x = self.pool(F.relu(self.conv2(x)))
         x = self.pool(F.relu(self.conv3(x)))
         x = self.dropout(x)
-        x = x.view(-1, 32*53*53)
+        x = x.view(x.size(0), -1)
         x = F.relu(self.fc1(x))
         x = self.dropout(F.relu(self.fc2(x)))
         x = self.fc3(x)
         return x
 
 
-# create a complete CNN
-model = Net()
-
+# Replace (224, 224) with your input size
+dummy_input = torch.randn(1, 3, 224, 224)
+model_temp = Net(flattened_size=1)  # Temporarily bypass size for testing
+dummy_output = model_temp.pool(model_temp.pool(model_temp.pool(model_temp.conv3(
+    model_temp.pool(model_temp.conv2(model_temp.pool(model_temp.conv1(dummy_input))))))))
+flattened_size = dummy_output.numel()
+model = Net(flattened_size)
 # Loss function
 criterion = torch.nn.CrossEntropyLoss()  # Optimizer
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-5)
@@ -163,7 +167,7 @@ with open(csv_file_path, mode='w', newline='') as file:
         for f in os.listdir(image_folder):
             img_path = os.path.join(image_folder, f)
             img = Image.open(img_path).convert('RGB')
-            image_tensor = transform(img)
+            image_tensor = transform(img).unsqueeze(0)
             output = model(image_tensor)  # Get model predictions
             _, predicted_class = torch.max(output, 1)
             img_id = os.path.basename(f)  # Get the image filename
@@ -181,7 +185,7 @@ def prediction(image_folder, csv_file_path, index):
     row = rows[index]
     img_id = row['img_id']
     img_id = row['img_id']
-    predicted_class = int(row['prediction'])
+    predicted_class = int(row['prediction_class'])
     img_path = os.path.join(image_folder, img_id)
     img = Image.open(img_path).convert('RGB')
     plt.imshow(img)
