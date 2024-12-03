@@ -51,7 +51,7 @@ print("Class to Index Mapping:", train_dataset.class_to_idx)
 
 # Model creation:
 class Net(nn.Module):
-    def __init__(self):
+    def __init__(self, flattened_size):
         super(Net, self).__init__()
 
         self.conv1 = nn.Conv2d(3, 16, 5)
@@ -59,7 +59,7 @@ class Net(nn.Module):
         self.conv2 = nn.Conv2d(16, 32, 5)
         self.conv3 = nn.Conv2d(32, 64, 3)
         self.dropout = nn.Dropout(0.3)
-        
+
         self.fc1 = nn.Linear(flattened_size, 256)
         self.fc2 = nn.Linear(256, 84)
         self.fc3 = nn.Linear(84, 2)
