@@ -10,12 +10,16 @@ import random
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torchvision import datasets, transforms
+import torch.optim as optim
+from torch.optim import lr_scheduler
+from torchvision import datasets, transforms, models
 from torch.utils.data import DataLoader
 import os
 import csv
 from PIL import Image
 import matplotlib.pyplot as plt
+
+print("Current working directory:", os.getcwd())
 
 # %%
 
@@ -43,6 +47,45 @@ train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=16, shuffle=True)
 
 print("Class to Index Mapping:", train_dataset.class_to_idx)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# %%
+
+#use a pretrained model
+model_ft = models.resnet18(pretrained=True)
+num_ftrs = model_ft.fc.in_features
+# Since this is a binary classification task, we'll set the size of each output sample to 2. For multi-class classification, this can be generalized to nn.Linear(num_ftrs, len(class_names)).
+model_ft.fc = nn.Linear(num_ftrs, 2)
+
+# Move the model to the device
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model_ft = model_ft.to(device)
+
+# CrossEntropyLoss
+criterion = nn.CrossEntropyLoss()
+
+# ptimize all parameters of the model
+optimizer_ft = torch.optim.Adam(model_ft.parameters(), lr=0.001, weight_decay=1e-5)
+
+# We'll decay learning rate (lr) by a factor of 0.1 every 7 epochs
+exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
+
+print("Resnet downloaded, set up")
 
 
 # %%
@@ -78,71 +121,149 @@ class Net(nn.Module):
 model = Net()
 
 # Loss function
-criterion = torch.nn.CrossEntropyLoss()  # Optimizer
-optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
+criterion_cnn = torch.nn.CrossEntropyLoss()  # Optimizer
+optimizer_cnn = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
+exp_lr_scheduler_cnn = lr_scheduler.StepLR(optimizer_cnn, step_size=7, gamma=0.1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # %%
-# number of epochs to train the model
-n_epochs = 25
+
 
 # valid_loss_min = np.inf # track change in validation loss
 
+def train_model(model, train_loader, criterion, optimizer, scheduler, device):
+    n_epochs= 2
+    # Iterate over epochs
+    for epoch in range(1, n_epochs + 1):
 
-for epoch in range(1, n_epochs+1):
+        # Keep track of training loss
+        train_loss = 0.0
 
-    # keep track of training loss
-    train_loss = 0.0
+        # Set model to training mode
+        model.train()
 
-    # train the model #
-    model.train()
-    for data, target in train_loader:
-        # clear the gradients of all optimized variables
-        optimizer.zero_grad()
-        # forward pass: compute predicted outputs by passing inputs to the model
-        output = model(data)
-        # calculate the batch loss
-        loss = criterion(output, target)
-        # backward pass: compute gradient of the loss with respect to model parameters
-        loss.backward()
-        # perform a single optimization step (parameter update)
-        optimizer.step()
-        # update training loss
-        train_loss += loss.item()*data.size(0)
-    # average loss for epoch
-    train_loss = train_loss / len(train_loader.dataset)
-    print(f"Epoch {epoch}, Average Training Loss: {train_loss:.6f}")
+        # Iterate over batches in the training set
+        for data, target in train_loader:
+            data, target = data.to(device), target.to(device)
+
+            # Zero the gradients
+            optimizer.zero_grad()
+
+            # Forward pass
+            output = model(data)
+
+            # Calculate the batch loss
+            loss = criterion(output, target)
+
+            # Backward pass
+            loss.backward()
+
+            # Perform a single optimization step (parameter update)
+            optimizer.step()
+
+            # Update training loss
+            train_loss += loss.item() * data.size(0)
+
+            scheduler.step()
+
+        # Calculate average training loss for the epoch
+        train_loss = train_loss / len(train_loader.dataset)
+
+
+        # Print the training loss for the current epoch
+        print(f"Epoch {epoch}, Average Training Loss: {train_loss:.6f}")
+
+    # Return the trained model
+    return model
 
 
 # %%
+def evaluate_model(model, val_loader):
+    model.eval()  # Set the model to evaluation mode
+    correct = 0   # Count of correct predictions
+    total = 0     # Total samples in the test set
 
-model.eval()  # Set the model to evaluation mod
-correct = 0   # Count of correct predictions
-total = 0     # Total samples in the test set
+    with torch.no_grad():  # Disable gradient computation for evaluation
+        for i, (data, target) in enumerate(val_loader):
+            # Get model predictions: forward pass
+            output = model(data)
 
-with torch.no_grad():  # Disable gradient computation for evaluation
-    for i, (data, target) in enumerate(val_loader):
-        # Get model predictions: forward pass
-        output = model(data)
+            # Predicted class
+            _, predicted_class = torch.max(output, 1)
 
-        # Predicted class
-        _, predicted_class = torch.max(output, 1)
+            # Count correct predictions
+            correct += (predicted_class == target).sum().item()
+            total += target.size(0)
 
-        # Count correct predictions
-        correct += (predicted_class == target).sum().item()
-        total += target.size(0)
+            # Print individual predictions for debugging
+            for j in range(len(data)):
+                print(f"{i * len(data) + j + 1}.) Prediction: {predicted_class[j].item()} | "
+                      f"Actual: {target[j].item()}")
 
-        # Print individual predictions for debugging
-        for j in range(len(data)):
-            print(f"{i * len(data) + j + 1}.) Prediction: {predicted_class[j].item()} | "
-                  f"Actual: {target[j].item()}")
+    # Calculate and print overall accuracy
+    accuracy = correct / total
+    print(f"\nOverall Test Accuracy: {accuracy:.2%}")
+    print(f"Total Correct Predictions: {correct}/{total}")
 
-# Calculate and print overall accuracy
-accuracy = correct / total
-print(f"\nOverall Test Accuracy: {accuracy:.2%}")
-print(f"Total Correct Predictions: {correct}/{total}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# %%
+#train with pretrained model
+model_ft = train_model(model_ft, train_loader, criterion, optimizer_ft, exp_lr_scheduler, device)
+
+
+# %%
+#train CNN
+model = train_model(model, train_loader, criterion_cnn, optimizer_cnn, exp_lr_scheduler_cnn, device)
+
+
+
+
+
+# %%
+#evaluating model 
+evaluate_model(model_ft, val_loader)
+
+
+
+
+
+
+
+
 
 # %%
 # Save the model
+torch.save(model_ft.state_dict(), 'model_fire_pretrained.pt')
 torch.save(model.state_dict(), 'model_fire.pt')
 # %%
 
