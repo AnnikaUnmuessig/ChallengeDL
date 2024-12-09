@@ -97,10 +97,10 @@ The training pipeline includes:
 Here are the plots for training and validation loss and accuracy:
 
 #### Loss Plot  
-![Loss Plot](result/loss_plot.png)  
+![Loss Plot](results/loss_plot.png)  
 
 #### Accuracy Plot  
-![Accuracy Plot](result/accuracy_plot.png)  
+![Accuracy Plot](results/accuracy_plot.png)  
 
 These visualizations help to understand the learning behavior of the model over the training process.
 
